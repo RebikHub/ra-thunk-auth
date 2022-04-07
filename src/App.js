@@ -6,7 +6,6 @@ import NetoList from "./components/NetoList";
 import NetoLogout from "./components/NetoLogout";
 import NetoPlug from "./components/NetoPlug";
 import NetoError from "./components/NetoError";
-import NetoNews from "./components/NetoNews";
 import useFetchAuthorization from "./custom_hook/useFetchAuthorization";
 
 export default function App() {
@@ -14,9 +13,8 @@ export default function App() {
   const [password, setPassword] = useState('');
   const [input, setInput] = useState(null);
   const [output, setOutput] = useState(false);
-  const [newsid, setNewsid] = useState(null);
   const token = JSON.parse(localStorage.getItem('token'));
-  const [user, news, error, newsOne] = useFetchAuthorization(input, output, token, newsid);
+  const [user, news, error] = useFetchAuthorization(input, output, token);
   const [done, setDone] = useState(false);
 
   function handleInputLogin(ev) {
@@ -51,10 +49,6 @@ export default function App() {
     setOutput(true);
     setInput(null);
     setTimeout(() => setOutput(false), 2*1000);
-  };
-
-  function checkId(id) {
-    setNewsid(id);
   };
 
   if (done) {
@@ -95,21 +89,10 @@ export default function App() {
                 user={user}
                 handleClickOut={handleClickOut}/>
             </NetoHeader>
-            <NetoList news={news} checkId={checkId}/>
+            <NetoList news={news} />
           </>
           ) : (token ? <progress/> : <NetoError error={error}/>)
         }/>
-      <Route path="/news/:newsId" element={user !== null ? (
-          <>
-            <NetoHeader>
-              <NetoLogout
-                user={user}
-                handleClickOut={handleClickOut}/>
-            </NetoHeader>
-            <NetoNews news={newsOne} checkId={checkId}/>
-          </>
-          ) : <progress/>
-      }/>
       <Route path="*" element={<NetoError error={error}/>}/>
     </Routes>
   );

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 
-export default function useFetchAuthorization(input, output, saveToken, newsId) {
+export default function useFetchAuthorization(input, output, saveToken) {
   const [token, setToken] = useState(saveToken);
   const [user, setUser] = useState(null);
   const [news, setNews] = useState([]);
   const [error, setError] = useState('Not Found First Value');
-  const [newsOne, setNewsOne] = useState(null);
 
   useEffect(() => {
     if (output) {
@@ -16,25 +15,6 @@ export default function useFetchAuthorization(input, output, saveToken, newsId) 
     };
   }, [output]);
 
-  useEffect(() => {
-    if (newsId) {
-      fetch(process.env.REACT_APP_NEWS_ID + newsId, {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + token.token
-        }
-      })
-        .then(resp => {
-          if(resp.status === 404) {
-            throw new Error('404 Not Found')
-          };
-          setError('Not Found First Value');
-          return resp.json();
-        })
-        .then(json => setNewsOne(json))
-        .catch(() => setError('404 Not Found'))
-    };
-  }, [newsId, token]);
 
   useEffect(() => {
     if (input !== null) {
@@ -96,5 +76,5 @@ export default function useFetchAuthorization(input, output, saveToken, newsId) 
     };
   }, [token]);
 
-  return [user, news, error, newsOne];
+  return [user, news, error];
 };

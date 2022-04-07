@@ -1,15 +1,17 @@
 import React from 'react';
-import NetoNews from './NetoNews';
 
-export default function NetoList({news, checkId}) {
+export default function NetoList({news}) {
   return (
-    <div className="news-list">
+    <ul className="news-list">
       {news.map((el) =>
-        <NetoNews
-          news={el}
-          checkId={checkId}
-          key={el.id}/>
+          <li className="news" key={el.id}>
+          <img src={el.image} alt={el.title} />
+          <div className="news-text">
+            <h5>{el.title}</h5>
+            <p>{el.content}</p>
+          </div>
+        </li>
         )}
-    </div>
+    </ul>
   );
 };

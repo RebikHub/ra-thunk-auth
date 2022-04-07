@@ -58,7 +58,7 @@ const bearerAuth = passport.authenticate('bearer', { session: false });
 
 const router = new Router();
 router.post('/auth', async (ctx, next) => {
-    const { login, password } = ctx.request.body;
+    const { login, password } = JSON.parse(ctx.request.body);
 
     const user = users.get(login);
     if (user === undefined) {
