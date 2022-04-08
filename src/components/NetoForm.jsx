@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 export default function NetoForm({
   login,
@@ -8,18 +8,18 @@ export default function NetoForm({
   handleInputPassword,
   handleClickIn
 }) {
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
 
-  function getToken() {
-    if (login !== "" && password !== "") {
-      setTimeout(() => {
-        const token = JSON.parse(localStorage.getItem('token'));
-        if (token) {
-          navigate("/news");
-        };
-      }, 2000);
-    };
-  };
+  // function getToken() {
+  //   if (login !== "" && password !== "") {
+  //     setTimeout(() => {
+  //       const token = JSON.parse(localStorage.getItem('token'));
+  //       if (token) {
+  //         navigate("/news");
+  //       };
+  //     }, 2000);
+  //   };
+  // };
 
   return (
     <form className="form">
@@ -41,7 +41,7 @@ export default function NetoForm({
         className="form-btn"
         onClick={(ev) => {
           handleClickIn(ev)
-          getToken()
+          // getToken()
           }}>Login</button>
     </form>
   );

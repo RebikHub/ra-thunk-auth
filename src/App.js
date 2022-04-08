@@ -1,21 +1,38 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import NetoForm from "./components/NetoForm";
 import NetoHeader from "./components/NetoHeader";
 import NetoList from "./components/NetoList";
 import NetoLogout from "./components/NetoLogout";
 import NetoPlug from "./components/NetoPlug";
 import NetoError from "./components/NetoError";
-import useFetchAuthorization from "./custom_hook/useFetchAuthorization";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPostAuth, fetchGetUser } from "./store/middleware";
+import { stateReset } from "./store/listReducers";
 
 export default function App() {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [input, setInput] = useState(null);
-  const [output, setOutput] = useState(false);
   const token = JSON.parse(localStorage.getItem('token'));
-  const [user, news, error] = useFetchAuthorization(input, output, token);
-  const [done, setDone] = useState(false);
+  const state = useSelector(state => state.listReducers);
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+  const { user, news, error, loading } = state;
+
+  console.log(state);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchGetUser(token));
+    };
+  }, []);
+
+  useEffect(() => {
+    if (loading.news) {
+      navigate("/news");
+    };
+  }, [loading.news]);
 
   function handleInputLogin(ev) {
     setLogin(ev.target.value);
@@ -27,31 +44,34 @@ export default function App() {
 
   function handleClickIn(ev) {
     if (login !== '' && password !== '') {
-      setInput({
+      dispatch(fetchPostAuth({
         login: login, 
         password: password
-      });
+      }));
       ev.preventDefault();
       setLogin('');
       setPassword('');
     };
   };
 
-  useEffect(() => {
-    if (error === 'Not Found First Value') {
-      setDone(false);
-    } else if (error === 'user not found' || error === '401 Unauthorized') {
-      setDone(true);
-    };
-  }, [error, done, input]);
-
   function handleClickOut() {
-    setOutput(true);
-    setInput(null);
-    setTimeout(() => setOutput(false), 2*1000);
+    localStorage.removeItem('token');
+    dispatch(stateReset());
   };
 
-  if (done) {
+  if (loading.token || loading.user) {
+    return (
+      <>
+        <NetoHeader>
+          <div className="loader" style={{fontSize: '8px'}}>Loading...</div>
+        </NetoHeader>
+        <NetoPlug/>
+      </>
+    );
+  };
+
+
+  if (error) {
     return (
       <>
         <NetoHeader>
@@ -82,7 +102,7 @@ export default function App() {
           <NetoPlug/>
         </>
       }/>
-      <Route path="/news" element={user !== null ? (
+      <Route path="/news" element={!loading.news ? (
           <>
             <NetoHeader>
               <NetoLogout
@@ -91,7 +111,8 @@ export default function App() {
             </NetoHeader>
             <NetoList news={news} />
           </>
-          ) : (token ? <progress/> : <NetoError error={error}/>)
+          ) : (token ? <div className="loader">Loading...</div> :
+              <NetoError error={error}/>)
         }/>
       <Route path="*" element={<NetoError error={error}/>}/>
     </Routes>
