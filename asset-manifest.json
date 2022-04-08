@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/ra-thunk-auth/static/css/main.31c4713e.css",
+    "main.js": "/ra-thunk-auth/static/js/main.56884d6e.js",
+    "index.html": "/ra-thunk-auth/index.html",
+    "main.31c4713e.css.map": "/ra-thunk-auth/static/css/main.31c4713e.css.map",
+    "main.56884d6e.js.map": "/ra-thunk-auth/static/js/main.56884d6e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.31c4713e.css",
+    "static/js/main.56884d6e.js"
+  ]
+}
