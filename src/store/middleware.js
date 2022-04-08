@@ -25,13 +25,13 @@ export function fetchPostAuth(input) {
         return resp.json();
       })
       .then(token => {
-        dispatch(postAuthSuccess(token));
+        dispatch(postAuthSuccess());
         localStorage.setItem('token', JSON.stringify(token));
         dispatch(fetchGetUser(token));
       })
       .catch(() => dispatch(postAuthError('user not found')));
-  }
-}
+  };
+};
 
 export function fetchGetUser(token) {
   return (dispatch) => {
@@ -54,8 +54,8 @@ export function fetchGetUser(token) {
         dispatch(fetchGetNews(token));
       })
       .catch(() => dispatch(getUserError('401 Unauthorized')));
-  }
-}
+  };
+};
 
 export function fetchGetNews(token) {
   return (dispatch) => {
@@ -75,5 +75,5 @@ export function fetchGetNews(token) {
       })
       .then(json => dispatch(getNewsSuccess(json)))
       .catch(() => dispatch(getNewsError('401 Unauthorized not news')));
-  }
-}
+  };
+};

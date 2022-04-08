@@ -1,7 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function NetoLogout({user, handleClickOut}) {
+  let navigate = useNavigate();
+
+  if (user === null) {
+    return navigate('/');
+  };
+
   return (
     <div className="auth">
       <h5>{user.name}</h5>

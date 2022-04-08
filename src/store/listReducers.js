@@ -4,7 +4,6 @@ export const listReducers = createSlice({
   name: 'listReducers',
   initialState: {
     user: null,
-    token: null,
     news: [],
     loading: {
       token: false,
@@ -25,7 +24,6 @@ export const listReducers = createSlice({
     postAuthSuccess: (state, action) => {
       state.loading.token = false;
       state.error = null;
-      state.token = action.payload.token;
     },
     getUserRequest: (state) => {
       state.loading.user = true;
@@ -56,7 +54,6 @@ export const listReducers = createSlice({
     stateReset: (state) => {
       state = {
         user: null,
-        token: null,
         news: [],
         loading: {
           token: false,

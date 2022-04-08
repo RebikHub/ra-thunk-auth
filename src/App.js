@@ -10,17 +10,18 @@ import NetoError from "./components/NetoError";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPostAuth, fetchGetUser } from "./store/middleware";
 import { stateReset } from "./store/listReducers";
+import NetoLoader from "./components/NetoLoader";
 
 export default function App() {
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
+  const [input, setInput] = useState({
+    login: '',
+    password: ''
+  });
   const token = JSON.parse(localStorage.getItem('token'));
   const state = useSelector(state => state.listReducers);
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const { user, news, error, loading } = state;
-
-  console.log(state);
 
   useEffect(() => {
     if (token) {
@@ -35,22 +36,21 @@ export default function App() {
   }, [loading.news]);
 
   function handleInputLogin(ev) {
-    setLogin(ev.target.value);
+    setInput((prev) => ({...prev, login: ev.target.value}));
   };
 
   function handleInputPassword(ev) {
-    setPassword(ev.target.value);
+    setInput((prev) => ({...prev, password: ev.target.value}));
   };
 
   function handleClickIn(ev) {
-    if (login !== '' && password !== '') {
-      dispatch(fetchPostAuth({
-        login: login, 
-        password: password
-      }));
+    if (input.login !== '' && input.password !== '') {
+      dispatch(fetchPostAuth(input));
       ev.preventDefault();
-      setLogin('');
-      setPassword('');
+      setInput({
+        login: '',
+        password: ''
+      });
     };
   };
 
@@ -63,7 +63,7 @@ export default function App() {
     return (
       <>
         <NetoHeader>
-          <div className="loader" style={{fontSize: '8px'}}>Loading...</div>
+          <NetoLoader styleName={"loader-auth"}/>
         </NetoHeader>
         <NetoPlug/>
       </>
@@ -76,8 +76,8 @@ export default function App() {
       <>
         <NetoHeader>
           <NetoForm
-            login={login}
-            password={password}
+            login={input.login}
+            password={input.password}
             handleInputLogin={handleInputLogin}
             handleInputPassword={handleInputPassword}
             handleClickIn={handleClickIn}/>
@@ -93,8 +93,8 @@ export default function App() {
         <>
           <NetoHeader>
             <NetoForm
-              login={login}
-              password={password}
+              login={input.login}
+              password={input.password}
               handleInputLogin={handleInputLogin}
               handleInputPassword={handleInputPassword}
               handleClickIn={handleClickIn}/>
@@ -111,7 +111,7 @@ export default function App() {
             </NetoHeader>
             <NetoList news={news} />
           </>
-          ) : (token ? <div className="loader">Loading...</div> :
+          ) : (token ? <NetoLoader/> :
               <NetoError error={error}/>)
         }/>
       <Route path="*" element={<NetoError error={error}/>}/>

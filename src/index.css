@@ -183,3 +183,8 @@ input {
     height: 5em;
   }
 }
+
+.loader-auth {
+  font-size: 5px;
+  margin-left: 600px;
+}
