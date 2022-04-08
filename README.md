@@ -1,4 +1,7 @@
-Authentication
+[![Build status](https://ci.appveyor.com/api/projects/status/kqrav6v8lm6j3mff/branch/master?svg=true)](https://ci.appveyor.com/project/RebikHub/ra-thunk-auth/branch/master)
+
+[Authentication](https://rebikhub.github.io/ra-thunk-auth/)
+
 ===
 
 Поскольку с Context API вы уже разобрались, пришло время разобраться и с Redux. Перепишите построенную вами систему на Redux (вы можете использовать на собственное усмотрение как чистый Redux с Side Effects, так и Redux + Redux Thunk).
